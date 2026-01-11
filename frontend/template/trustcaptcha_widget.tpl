@@ -9,13 +9,13 @@
         autostart="{$autostart|escape:'html'}"
         license="{$license|escape:'html'}"
         hide-branding="{$hideBranding|escape:'html'}"
-        invisible="{$invisible|escape:'html'}"
-        invisible-hint="{$invisibleHint|escape:'html'}"
-        mode="{$mode|escape:'html'}"
-        token-field-name="{$tokenFieldName|escape:'html'}"
-        privacy-url="{$privacyUrl|escape:'html'}"
         custom-translations="{$customTranslations|escape:'html'}"
         custom-design="{$customDesign|escape:'html'}"
+        privacy-url="{$privacyUrl|escape:'html'}"
+        invisible="{$invisible|escape:'html'}"
+        invisible-hint="{$invisibleHint|escape:'html'}"
+        token-field-name="{$tokenFieldName|escape:'html'}"
+        mode="{$mode|escape:'html'}"
 ></trustcaptcha-component>
 
 <script>

@@ -11,6 +11,8 @@ use JTL\Shop;
 
 class TrustCaptcha
 {
+    private const VERIFY_URL = 'https://api.trustcomponent.com/verifications/{verificationId}/assessments';
+
     private $plugin;
 
     public function __construct(PluginInterface $plugin)
@@ -23,80 +25,56 @@ class TrustCaptcha
         return $this->plugin;
     }
 
-    /**
-     * Liest Token aus Request
-     */
-    public function getToken(): ?string
+    public function validate(array $requestData): bool
     {
-        // Token kommt als POST-Parameter vom trustcaptcha-component
-        // Namen ggf. anpassen – wichtig ist: nichts erfinden, nur sauber umbauen
-        return Request::postVar('trustcaptcha_token');
+        if (empty($requestData['trustcaptcha_token'])) {
+            return false;
+        }
+
+        $plugin = $this->getPlugin();
+        $config = $plugin->getConfig();
+        $secretKey = $config->getValue('trustcaptcha_secret_key') ?? '';
+        return $this->verifyKey($secretKey, $requestData['trustcaptcha_token']);
     }
 
-    /**
-     * Ruft TrustCaptcha API auf und liefert:
-     * - valid => bool
-     * - score => float|null
-     * - error => string|null
-     */
-    public function verify(string $token): array
-    {
-        $secret = $this->plugin->getConfig()->getValue('trustcaptcha_secret_key');
+    private function verifyKey(string $secretKey, string $trustcaptcha_token): bool {
 
-        if ($secret === null || $secret === '') {
-            return [
-                'valid' => false,
-                'score' => null,
-                'error' => 'no-secret-configured'
-            ];
+        $decodedJson = base64_decode($trustcaptcha_token);
+        $tokenData = json_decode($decodedJson, true);
+
+        if (!$tokenData || empty($tokenData['verificationId'])) {
+            return false;
         }
 
-        // API-Request vorbereiten
-        $payload = [
-            'secret' => $secret,
-            'response' => $token,
-            'remoteip' => $_SERVER['REMOTE_ADDR'] ?? null,
+        $url = 'https://api.trustcomponent.com/verifications/' . urlencode($tokenData["verificationId"]) . '/assessments';
+
+
+        $options = [
+            'http' => [
+                'method' => 'GET',
+                'header' => "Content-Type: application/json\r\n" .
+                    "tc-authorization: {$secretKey}\r\n",
+                'timeout' => 5
+            ]
         ];
 
-        $ch = curl_init('https://api.trustcaptcha.com/verify'); // URL ggf. anpassen – du kennst die echte
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($payload));
+        $context = stream_context_create($options);
+        $response = @file_get_contents($url, false, $context);
 
-        $result = curl_exec($ch);
-
-        if ($result === false) {
-            return [
-                'valid' => false,
-                'score' => null,
-                'error' => 'curl-error'
-            ];
+        if (!$response) {
+            return false;
         }
 
-        $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
+        $result = json_decode($response, true);
 
-        $data = json_decode($result, true);
-
-        if ($status !== 200 || !is_array($data)) {
-            return [
-                'valid' => false,
-                'score' => null,
-                'error' => 'invalid-api-response'
-            ];
+        // TODO welche anderen Werte wären wichtig?
+        $threshold = (float) ($this->plugin->getConfig()->getValue('trustcaptcha_threshold') ?? 0.5);
+        if (isset($result['score']) && $result['score'] < $threshold) {
+            return false;
         }
 
-        return [
-            'valid' => (bool)($data['success'] ?? false),
-            'score' => isset($data['score']) ? (float)$data['score'] : null,
-            'error' => $data['error-codes'][0] ?? null
-        ];
+        return true;
     }
-
-
-
-    // neu
-
 
     public function getMarkup(): string
     {
