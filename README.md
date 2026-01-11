@@ -1,6 +1,4 @@
-# JTL-Library
-
-
+# TrustCaptcha Plugin für JTL
 
 ## Getting started
 

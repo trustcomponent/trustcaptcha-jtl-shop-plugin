@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jtlshopplugin>
+    <Name>TrustCaptcha</Name>
+    <Description>TrustCaptcha – minimal test plugin</Description>
+    <Author>TrustCaptcha GmbH</Author>
+    <URL>https://www.trustcaptcha.com/</URL>
+    <PluginID>trustcaptcha</PluginID>
+    <XMLVersion>100</XMLVersion>
+    <Version>0.1.0</Version>
+    <ShopVersion>5.4.1</ShopVersion>
+    <CreateDate>2025-01-01</CreateDate>
+
+    <Install>
+        <JS>
+            <file>
+                <name>trustcaptcha.js</name>
+                <priority>1</priority>
+                <position>head</position>
+            </file>
+        </JS>
+
+        <Adminmenu>
+            <Settingslink sort="3">
+                <Name>Einstellungen</Name>
+
+                <!-- General -->
+                <Setting type="checkbox" initialValue="1" sort="1" conf="Y">
+                    <Name>Enable TrustCaptcha (global)</Name>
+                    <Description>When enabled, TrustCaptcha replaces JTL's CAPTCHA system.</Description>
+                    <ValueName>trustcaptcha_enabled</ValueName> <!-- TODO -->
+                </Setting>
+
+                <Setting type="selectbox" initialValue="native" sort="2" conf="Y">
+                    <Name>Integration mode</Name>
+                    <Description>
+                        Native CAPTCHA (recommended): Show only when Magento requires a CAPTCHA; TrustCaptcha performs the check.
+                        Always show: Always inject on selected forms; Magento's native CAPTCHA is disabled automatically.
+                    </Description>
+                    <ValueName>trustcaptcha_integration_mode</ValueName>
+                    <SelectboxOptions>
+                        <Option value="native" sort="1">Native CAPTCHA (recommended)</Option>
+                        <Option value="always" sort="2">Always show</Option>
+                    </SelectboxOptions>
+                </Setting>
+
+                <Setting type="text" initialValue="" sort="3" conf="Y">
+                    <Name>Site key (required)</Name>
+                    <Description></Description>
+                    <ValueName>trustcaptcha_site_key</ValueName>
+                </Setting>
+
+                <Setting type="password" initialValue="" sort="4" conf="Y">
+                    <Name>Secret key (required)</Name>
+                    <Description></Description>
+                    <ValueName>trustcaptcha_secret_key</ValueName>
+                </Setting>
+
+                <Setting type="password" initialValue="" sort="5" conf="Y">
+                    <Name>License key (optional)</Name>
+                    <Description></Description>
+                    <ValueName>trustcaptcha_license_key</ValueName>
+                </Setting>
+
+                <Setting type="selectbox" initialValue="0.5" sort="6" conf="Y">
+                    <Name>Bot score threshold (0.00–1.00)</Name>
+                    <Description>At which score a request counts as a bot. Recommended: 0.5 (0 = human, 1 = bot)</Description>
+                    <ValueName>trustcaptcha_threshold</ValueName>
+                    <SelectboxOptions>
+                        <Option value="0.00" sort="0">0.00</Option>
+                        <Option value="0.05" sort="1">0.05</Option>
+                        <Option value="0.10" sort="2">0.10</Option>
+                        <Option value="0.15" sort="3">0.15</Option>
+                        <Option value="0.20" sort="4">0.20</Option>
+                        <Option value="0.25" sort="5">0.25</Option>
+                        <Option value="0.30" sort="6">0.30</Option>
+                        <Option value="0.35" sort="7">0.35</Option>
+                        <Option value="0.40" sort="8">0.40</Option>
+                        <Option value="0.45" sort="9">0.45</Option>
+                        <Option value="0.50" sort="10">0.50</Option>
+                        <Option value="0.55" sort="11">0.55</Option>
+                        <Option value="0.60" sort="12">0.60</Option>
+                        <Option value="0.65" sort="13">0.65</Option>
+                        <Option value="0.70" sort="14">0.70</Option>
+                        <Option value="0.75" sort="15">0.75</Option>
+                        <Option value="0.80" sort="16">0.80</Option>
+                        <Option value="0.85" sort="17">0.85</Option>
+                        <Option value="0.90" sort="18">0.90</Option>
+                        <Option value="0.95" sort="19">0.95</Option>
+                        <Option value="1.00" sort="20">1.00</Option>
+                    </SelectboxOptions>
+                </Setting>
+
+                <Setting type="selectbox" initialValue="full" sort="7" conf="Y">
+                    <Name>Width</Name>
+                    <ValueName>trustcaptcha_width</ValueName>
+                    <SelectboxOptions>
+                        <Option value="full" sort="1">Full</Option>
+                        <Option value="fixed" sort="2">Fixed</Option>
+                    </SelectboxOptions>
+                </Setting>
+
+                <Setting type="selectbox" initialValue="auto" sort="8" conf="Y">
+                    <Name>Language</Name>
+                    <ValueName>trustcaptcha_language</ValueName>
+                    <SelectboxOptions>
+                        <Option value="auto" sort="1">Auto Detection</Option>
+                        <Option value="en" sort="2">English</Option>
+                        <Option value="de" sort="3">German</Option>
+                        <Option value="fr" sort="4">French</Option>
+                        <Option value="es" sort="5">Spanish</Option>
+                        <Option value="sv" sort="6">Swedish</Option>
+                        <!-- weitere Sprachen nach Bedarf -->
+                    </SelectboxOptions>
+                </Setting>
+
+                <Setting type="selectbox" initialValue="light" sort="9" conf="Y">
+                    <Name>Theme</Name>
+                    <ValueName>trustcaptcha_theme</ValueName>
+                    <SelectboxOptions>
+                        <Option value="light" sort="1">Light</Option>
+                        <Option value="dark" sort="2">Dark</Option>
+                        <Option value="media" sort="3">Device setting</Option>
+                    </SelectboxOptions>
+                </Setting>
+
+                <Setting type="checkbox" initialValue="1" sort="10" conf="Y">
+                    <Name>Autostart</Name>
+                    <ValueName>trustcaptcha_autostart</ValueName>
+                </Setting>
+
+                <Setting type="text" initialValue="" sort="11" conf="Y">
+                    <Name>Privacy URL</Name>
+                    <ValueName>trustcaptcha_privacy_url</ValueName>
+                </Setting>
+
+                <Setting type="checkbox" initialValue="0" sort="12" conf="Y">
+                    <Name>Hide branding</Name>
+                    <ValueName>trustcaptcha_hide_branding</ValueName>
+                </Setting>
+
+                <Setting type="checkbox" initialValue="0" sort="13" conf="Y">
+                    <Name>Invisible</Name>
+                    <ValueName>trustcaptcha_invisible</ValueName>
+                </Setting>
+
+                <Setting type="selectbox" initialValue="inline" sort="14" conf="Y">
+                    <Name>Invisible hint</Name>
+                    <ValueName>trustcaptcha_invisible_hint</ValueName>
+                    <SelectboxOptions>
+                        <Option value="inline" sort="1">Inline</Option>
+                        <Option value="right-border" sort="2">Right border</Option>
+                        <Option value="right-bottom" sort="3">Right bottom</Option>
+                        <Option value="hidden" sort="4">Hidden</Option>
+                    </SelectboxOptions>
+                </Setting>
+
+                <Setting type="selectbox" initialValue="standard" sort="15" conf="Y">
+                    <Name>Mode</Name>
+                    <ValueName>trustcaptcha_mode</ValueName>
+                    <SelectboxOptions>
+                        <Option value="standard" sort="1">Standard</Option>
+                        <Option value="minimal" sort="2">Minimal</Option>
+                    </SelectboxOptions>
+                </Setting>
+
+                <Setting type="textarea" initialValue="" sort="16" conf="Y">
+                    <Name>Custom translations (JSON)</Name>
+                    <ValueName>trustcaptcha_custom_translations</ValueName>
+                </Setting>
+
+                <Setting type="textarea" initialValue="" sort="17" conf="Y">
+                    <Name>Custom design (JSON)</Name>
+                    <ValueName>trustcaptcha_custom_design</ValueName>
+                </Setting>
+
+                <!-- Forms (only when Integration mode = always) -->
+                <Setting type="checkbox" initialValue="0" sort="20" conf="Y">
+                    <Name>Login</Name>
+                    <Description>Always insert CAPTCHA on login forms</Description>
+                    <ValueName>trustcaptcha_enable_login</ValueName>
+                </Setting>
+
+                <Setting type="checkbox" initialValue="0" sort="21" conf="Y">
+                    <Name>Registration</Name>
+                    <Description>Always insert CAPTCHA on registration forms</Description>
+                    <ValueName>trustcaptcha_enable_register</ValueName>
+                </Setting>
+
+                <Setting type="checkbox" initialValue="0" sort="22" conf="Y">
+                    <Name>Lost Password</Name>
+                    <Description>Always insert CAPTCHA on lost password forms</Description>
+                    <ValueName>trustcaptcha_enable_forgot</ValueName>
+                </Setting>
+
+                <Setting type="checkbox" initialValue="0" sort="23" conf="Y">
+                    <Name>Contact Form</Name>
+                    <Description>Always insert CAPTCHA on contact forms</Description>
+                    <ValueName>trustcaptcha_enable_contact</ValueName>
+                </Setting>
+
+                <Setting type="checkbox" initialValue="0" sort="24" conf="Y">
+                    <Name>Product Reviews</Name>
+                    <Description>Always insert CAPTCHA on product reviews</Description>
+                    <ValueName>trustcaptcha_enable_review</ValueName>
+                </Setting>
+
+                <Setting type="checkbox" initialValue="0" sort="25" conf="Y">
+                    <Name>Email to a Friend</Name>
+                    <Description>Always insert CAPTCHA on send-to-friend forms</Description>
+                    <ValueName>trustcaptcha_enable_sendfriend</ValueName>
+                </Setting>
+
+                <Setting type="checkbox" initialValue="0" sort="26" conf="Y">
+                    <Name>Share Wishlist</Name>
+                    <Description>Always insert CAPTCHA on wishlist share forms</Description>
+                    <ValueName>trustcaptcha_enable_wishlist_share</ValueName>
+                </Setting>
+
+                <Setting type="checkbox" initialValue="0" sort="27" conf="Y">
+                    <Name>Orders &amp; Returns (Guest)</Name>
+                    <Description>Always insert CAPTCHA on guest order lookup</Description>
+                    <ValueName>trustcaptcha_enable_order_lookup</ValueName>
+                </Setting>
+
+            </Settingslink>
+
+        </Adminmenu>
+    </Install>
+</jtlshopplugin>
