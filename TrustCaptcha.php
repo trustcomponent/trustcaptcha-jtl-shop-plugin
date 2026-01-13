@@ -73,7 +73,6 @@ class TrustCaptcha
         }
 
         // TODO Offizielle Library einbinden
-        // TODO Nachricht "Bitte füllen Sie alle Pflichtfelder aus." ändern
         // TODO Kontakt-Seite rechts vielleicht?
         return true;
     }

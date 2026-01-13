@@ -119,7 +119,20 @@ class Bootstrap extends Bootstrapper
 
     public function tcValidate(array &$args): void
     {
-        $args['isValid'] = $this->getCaptcha()->validate($args['requestData'] ?? []);
+        $isValid = $this->getCaptcha()->validate($args['requestData'] ?? []);
+
+        if (!$isValid) {
+            $plugin = $this->getPlugin();
+            $message  = $plugin->getLocalization()->getTranslation('captcha_failed_alert');
+
+            Shop::Container()->getAlertService()->addAlert(
+                Alert::TYPE_DANGER,
+                $message,
+                'trustcaptcha_fail'
+            );
+        }
+
+        $args['isValid'] = $isValid;
     }
 
 }
