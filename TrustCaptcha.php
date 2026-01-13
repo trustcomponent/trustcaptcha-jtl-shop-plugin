@@ -11,7 +11,6 @@ use JTL\Shop;
 
 class TrustCaptcha
 {
-    private const VERIFY_URL = 'https://api.trustcomponent.com/verifications/{verificationId}/assessments';
 
     private $plugin;
 
@@ -69,10 +68,13 @@ class TrustCaptcha
 
         // TODO welche anderen Werte wären wichtig?
         $threshold = (float) ($this->plugin->getConfig()->getValue('trustcaptcha_threshold') ?? 0.5);
-        if (isset($result['score']) && $result['score'] < $threshold) {
+        if (isset($result['score']) && $result['score'] > $threshold) {
             return false;
         }
 
+        // TODO Offizielle Library einbinden
+        // TODO Nachricht "Bitte füllen Sie alle Pflichtfelder aus." ändern
+        // TODO Kontakt-Seite rechts vielleicht?
         return true;
     }
 
@@ -84,9 +86,8 @@ class TrustCaptcha
         $siteKey            = $config->getValue('trustcaptcha_site_key') ?? '';
         $language           = $config->getValue('trustcaptcha_language') ?? 'auto';
         $theme              = $config->getValue('trustcaptcha_theme') ?? 'light';
-        $tokenFieldName     = 'trustcaptcha_token';
         $width              = $config->getValue('trustcaptcha_width') ?? 'fixed';
-        $autostart          = $config->getValue('trustcaptcha_autostart') ? 'true' : 'false';
+        $autostart          = $config->getValue('trustcaptcha_autostart') == "Y" ? 'true' : 'false';
         $license            = $config->getValue('trustcaptcha_license_key') ?? '';
         $hideBranding       = $config->getValue('trustcaptcha_hide_branding') ? 'true' : 'false';
         $invisible          = $config->getValue('trustcaptcha_invisible') ? 'true' : 'false';
@@ -102,7 +103,6 @@ class TrustCaptcha
                     'siteKey'            => $siteKey,
                     'language'           => $language,
                     'theme'              => $theme,
-                    'tokenFieldName'     => $tokenFieldName,
                     'width'              => $width,
                     'autostart'          => $autostart,
                     'license'            => $license,

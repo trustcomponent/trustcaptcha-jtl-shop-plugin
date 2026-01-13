@@ -120,38 +120,6 @@ class Bootstrap extends Bootstrapper
     public function tcValidate(array &$args): void
     {
         $args['isValid'] = $this->getCaptcha()->validate($args['requestData'] ?? []);
-
-        // TODO Validierung
-//        $plugin = $this->getPlugin();
-//
-//        $captcha = new \Plugin\trustcaptcha\TrustCaptcha($plugin);
-//
-//        // Token lesen
-//        $token = $captcha->getToken();
-//
-//        if ($token === null || $token === '') {
-//            $args['isValid'] = false;
-//            $args['error']   = 'no-token';
-//            return;
-//        }
-//
-//        // API prüfen
-//        $result = $captcha->verify($token);
-//
-//        // Score-Schwelle aus Plugin-Einstellungen
-//        $threshold = (float)($plugin->getConfig()->getValue('trustcaptcha_threshold') ?? 0.5);
-//
-//        // Decide
-//        if ($result['valid'] === true && $result['score'] !== null && $result['score'] >= $threshold) {
-//            $args['isValid'] = true;
-//            $args['score']   = $result['score'];
-//            return;
-//        }
-//
-//        // Fail
-//        $args['isValid'] = false;
-//        $args['score']   = $result['score'] ?? null;
-//        $args['error']   = $result['error'] ?? 'low-score-or-invalid';
     }
 
 }

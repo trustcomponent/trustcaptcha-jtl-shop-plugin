@@ -1,5 +1,3 @@
-<input type="hidden" name="{$tokenFieldName|escape:'html'}" id="{$tokenFieldName|escape:'html'}">
-
 <trustcaptcha-component
         id="trustcaptchaComponent"
         sitekey="{$siteKey|escape:'html'}"
@@ -14,20 +12,11 @@
         privacy-url="{$privacyUrl|escape:'html'}"
         invisible="{$invisible|escape:'html'}"
         invisible-hint="{$invisibleHint|escape:'html'}"
-        token-field-name="{$tokenFieldName|escape:'html'}"
         mode="{$mode|escape:'html'}"
 ></trustcaptcha-component>
 
-<script>
-    (function() {
-        const c = document.getElementsByTagName("trustcaptcha-component")[0];
-
-        c.addEventListener("captchaSolved", function(event) {
-            document.getElementById("{$tokenFieldName|escape:'js'}").value = event.detail;
-        });
-
-        c.addEventListener("captchaFailed", function() {
-            document.getElementById("{$tokenFieldName|escape:'js'}").value = "";
-        });
-    })();
-</script>
+<style>
+    .simple-captcha-wrapper {
+        text-align: left;
+    }
+</style>
