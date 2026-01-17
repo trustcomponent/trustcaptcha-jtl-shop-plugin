@@ -1,0 +1,41 @@
+<?php return array(
+    'root' => array(
+        'name' => 'trustcaptcha/tc-captcha-library-jtl',
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
+        'reference' => '70bd8865797b95083226ac2a4538b61e95b16565',
+        'type' => 'jtl-shop-plugin',
+        'install_path' => __DIR__ . '/../../',
+        'aliases' => array(),
+        'dev' => true,
+    ),
+    'versions' => array(
+        'composer/ca-bundle' => array(
+            'pretty_version' => '1.5.10',
+            'version' => '1.5.10.0',
+            'reference' => '961a5e4056dd2e4a2eedcac7576075947c28bf63',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/./ca-bundle',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'trustcaptcha/tc-captcha-library-jtl' => array(
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'reference' => '70bd8865797b95083226ac2a4538b61e95b16565',
+            'type' => 'jtl-shop-plugin',
+            'install_path' => __DIR__ . '/../../',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'trustcomponent/trustcaptcha-php' => array(
+            'pretty_version' => '2.0.0',
+            'version' => '2.0.0.0',
+            'reference' => '18a40bebdb0f14e9411622c61cb1b77574a7188d',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../trustcomponent/trustcaptcha-php',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+    ),
+);

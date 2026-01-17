@@ -21,6 +21,11 @@ class Bootstrap extends Bootstrapper
 {
     public function boot(Dispatcher $dispatcher): void
     {
+        $autoload = $this->getPlugin()->getPaths()->getBasePath() . 'vendor/autoload.php';
+        if (file_exists($autoload)) {
+            require_once $autoload;
+        }
+
         parent::boot($dispatcher);
 
         // Admin-Tab rendern

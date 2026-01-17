@@ -1,0 +1,14 @@
+{
+  "name": "trustcaptcha/tc-captcha-library-jtl",
+  "description": "TrustCaptcha Plugin for JTL Shop",
+  "type": "jtl-shop-plugin",
+  "require": {
+    "php": ">=7.4",
+    "trustcomponent/trustcaptcha-php": "^2.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Plugin\\trustcaptcha\\": ""
+    }
+  }
+}

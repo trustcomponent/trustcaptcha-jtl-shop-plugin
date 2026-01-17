@@ -8,9 +8,15 @@
     <XMLVersion>100</XMLVersion>
     <Version>2.1.1</Version>
     <ShopVersion>5.0.0</ShopVersion>
-    <CreateDate>2025-01-01</CreateDate>
+    <CreateDate>2026-01-01</CreateDate>
+
+<!--    <ExsID></ExsID> &lt;!&ndash; TODO für extension store &ndash;&gt;-->
 
     <Install>
+
+        <RequireComposer>
+            <Package name="trustcomponent/trustcaptcha-php" version="^2.0"/>
+        </RequireComposer>
 
         <Locales>
             <Variable>
@@ -203,39 +209,9 @@
                     <ValueName>trustcaptcha_custom_design</ValueName>
                 </Setting>
 
-                <!-- TODO Was ist mit dem Bypass-Token? -->
-
             </Settingslink>
 
         </Adminmenu>
 
-        <ServicesRequiringConsent> <!-- TODO brauchen wir das? -->
-            <Vendor>
-                <ID>recaptcha</ID>
-                <Company>Google Inc.</Company>
-                <Localization iso="GER">
-                    <Name>ReCaptcha</Name>
-                    <Purpose>Stoppt SPAM-Bots</Purpose>
-                    <Description>Um Formulare auf dieser Seite absenden zu können, ist Ihre Zustimmung zur Datenweitergabe und Speicherung von Drittanbieter-Cookies des Anbieters Google erforderlich.
-                        Durch Ihre Zustimmung wird reCAPTCHA, ein Dienst von Google zur Vermeidung von Formular-SPAM, eingebettet.
-                        Dieser Dienst erlaubt uns die sichere Bereitstellung von Online-Formularen für unsere Kunden und schließt gleichzeitig SPAM-Bots aus, welche ansonsten unsere Services beeinträchtigen könnten.
-                        Sie werden nach Ihrer Zustimmung unter Umständen dazu aufgefordert, eine Sicherheitsabfrage zu beantworten, um das Formular absenden zu können.
-                        Stimmen Sie nicht zu, ist eine Nutzung dieses Formulars leider nicht möglich. Nehmen Sie bitte über einen alternativen Weg zu uns Kontakt auf.
-                    </Description>
-                    <PrivacyPolicy>https://policies.google.com/privacy?hl=de</PrivacyPolicy>
-                </Localization>
-                <Localization iso="ENG">
-                    <Name>ReCaptcha</Name>
-                    <Purpose>Stopping spam bots</Purpose>
-                    <Description>To submit forms on this page, you need to consent to the transfer of data and storage of third-party cookies by Google.
-                        With your consent, reCAPTCHA, a Google service to avoid spam messages via contact forms, will be embedded.
-                        This service allows us to provide our customers with a safe way to contact us via online forms. At the same time, the service prevents spam bots from compromising our services.
-                        After you gave your permission, you might be asked to answer a security prompt to send the form.
-                        If you do not consent, unfortunately you cannot use the form. Please contact us in a different way.
-                    </Description>
-                    <PrivacyPolicy>https://policies.google.com/privacy</PrivacyPolicy>
-                </Localization>
-            </Vendor>
-        </ServicesRequiringConsent>
     </Install>
 </jtlshopplugin>

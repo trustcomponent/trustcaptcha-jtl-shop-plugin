@@ -8,6 +8,8 @@ use Exception;
 use JTL\Helpers\Request;
 use JTL\Plugin\PluginInterface;
 use JTL\Shop;
+use TrustComponent\TrustCaptcha\CaptchaManager;
+use JTL\Helpers\Log;
 
 class TrustCaptcha
 {
@@ -26,55 +28,30 @@ class TrustCaptcha
 
     public function validate(array $requestData): bool
     {
-        if (empty($requestData['trustcaptcha_token'])) {
+        if (empty($requestData['tc-verification-token'])) {
             return false;
         }
 
         $plugin = $this->getPlugin();
         $config = $plugin->getConfig();
         $secretKey = $config->getValue('trustcaptcha_secret_key') ?? '';
-        return $this->verifyKey($secretKey, $requestData['trustcaptcha_token']);
+        return $this->verifyKey($secretKey, $requestData['tc-verification-token']);
     }
 
     private function verifyKey(string $secretKey, string $trustcaptcha_token): bool {
 
-        $decodedJson = base64_decode($trustcaptcha_token);
-        $tokenData = json_decode($decodedJson, true);
-
-        if (!$tokenData || empty($tokenData['verificationId'])) {
-            return false;
-        }
-
-        $url = 'https://api.trustcomponent.com/verifications/' . urlencode($tokenData["verificationId"]) . '/assessments';
-
-
-        $options = [
-            'http' => [
-                'method' => 'GET',
-                'header' => "Content-Type: application/json\r\n" .
-                    "tc-authorization: {$secretKey}\r\n",
-                'timeout' => 5
-            ]
-        ];
-
-        $context = stream_context_create($options);
-        $response = @file_get_contents($url, false, $context);
-
-        if (!$response) {
-            return false;
-        }
-
-        $result = json_decode($response, true);
-
-        // TODO welche anderen Werte wären wichtig?
         $threshold = (float) ($this->plugin->getConfig()->getValue('trustcaptcha_threshold') ?? 0.5);
-        if (isset($result['score']) && $result['score'] > $threshold) {
+        try {
+            $verificationResult = CaptchaManager::getVerificationResult($secretKey, $trustcaptcha_token);
+
+            if (!$verificationResult->verificationPassed || $verificationResult->score > $threshold) {
+                return false;
+            }
+            return true;
+        } catch (Exception $e) {
+
             return false;
         }
-
-        // TODO Offizielle Library einbinden
-        // TODO Kontakt-Seite rechts vielleicht?
-        return true;
     }
 
     public function getMarkup(): string
