@@ -16,6 +16,8 @@ use JTL\Helpers\Log;
 use JTL\Shopsetting;
 use JTL\Smarty\JTLSmarty;
 use Laminas\Diactoros\ServerRequestFactory;
+use JTL\Backend\Notification;
+use JTL\Backend\NotificationEntry;
 
 class Bootstrap extends Bootstrapper
 {
@@ -33,6 +35,7 @@ class Bootstrap extends Bootstrapper
             $this->renderAdminTab($menuItem, $smarty);
         });
 
+        $dispatcher->listen('backend.notification', [$this, 'checkNotification']);
         $dispatcher->listen('shop.hook.' . \HOOK_CAPTCHA_CONFIGURED, [$this, 'tcConfigured']);
         $dispatcher->listen('shop.hook.' . \HOOK_CAPTCHA_MARKUP, [$this, 'tcMarkup']);
         $dispatcher->listen('shop.hook.' . \HOOK_CAPTCHA_VALIDATE, [$this, 'tcValidate']);
@@ -91,6 +94,20 @@ class Bootstrap extends Bootstrapper
     }
 
 
+    public function checkNotification(Notification $notification): void
+    {
+
+        if (!$this->getCaptcha()->isConfigured()) {
+            $notification->add(
+                NotificationEntry::TYPE_WARNING,
+                $this->getPlugin()->getMeta()->getName(),
+                'Sie müssen einen Site-Key und einen Secret-Key angeben, um TrustCaptcha zu aktivieren.',
+                'plugin.php?kPlugin=' . $this->getPlugin()->getID()
+            );
+        }
+    }
+
+
 
     protected function getCaptcha(): TrustCaptcha
     {
@@ -107,9 +124,9 @@ class Bootstrap extends Bootstrapper
 
     public function tcConfigured(array &$args): void
     {
-
-        // z.B. beide Schlüssel vorhanden?
-        $args['isConfigured'] = true; // TODO
+        $args['isConfigured'] = true;
+//        $captcha = getCaptcha();
+//        $args['isConfigured'] = $captcha->isConfigured();
     }
 
 

@@ -26,6 +26,20 @@ class TrustCaptcha
         return $this->plugin;
     }
 
+    public function isConfigured(): bool
+    {
+        $config = $this->plugin->getConfig();
+
+        $siteKey   = $config->getValue('trustcaptcha_site_key') ?? '';
+        $secretKey = $config->getValue('trustcaptcha_secret_key') ?? '';
+
+        if (empty($siteKey) || empty($secretKey)) {
+            return false;
+        }
+
+        return true;
+    }
+
     public function validate(array $requestData): bool
     {
         if (empty($requestData['tc-verification-token'])) {
