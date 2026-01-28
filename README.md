@@ -18,19 +18,19 @@ Read the full [TrustCaptcha product overview](https://www.trustcomponent.com/en/
 
 ## Get started
 
-1. **Create an account:** [sign up / sign in](https://id.trustcomponent.com/en/signup).
+1. **Create an account:** [sign up / sign in](https://id.trustcomponent.com/signup).
 2. **Choose a CAPTCHA:** pick an existing one or create a new one.
 3. **Install the Plugin:** install the TrustCaptcha plugin in your JTL instance.
 4. **Configure TrustCaptcha:** Configure TrustCaptcha for your various JTL flows.
 
-Need a walkthrough? See the [JTL integration guide](https://www.trustcomponent.com/en/products/captcha/integrations/jtl-captcha-plugin).
+Need a walkthrough? See the [JTL integration guide](https://www.trustcomponent.com/en/products/captcha/integrations/jtl-shop-captcha-plugin).
 
 
 ## Basic JTL integration
 
 Install the TrustCaptcha JTL plugin via the Plugin store or using composer.
 
-**For detailed implementation instructions, [read the JTL integration guide](https://www.trustcomponent.com/en/products/captcha/integrations/jtl-captcha-plugin).**
+**For detailed implementation instructions, [read the JTL integration guide](https://www.trustcomponent.com/en/products/captcha/integrations/jtl-shop-captcha-plugin).**
 
 
 ## Other pre-built integrations
