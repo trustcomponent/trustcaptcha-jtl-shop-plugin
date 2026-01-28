@@ -1,7 +1,35 @@
 {
   "name": "trustcomponent/trustcaptcha-jtl",
-  "description": "TrustCaptcha Plugin for JTL Shop",
+  "description": "TrustCaptcha – Privacy-first CAPTCHA solution for JTL-Shop. GDPR-compliant, bot protection made in Europe.",
   "type": "jtl-shop-plugin",
+  "version": "2.1.1",
+  "keywords": [
+    "captcha",
+    "anti-spam",
+    "spam-protection",
+    "bot-protection",
+    "bot-detection",
+    "user-verification",
+    "jtl-shop",
+    "privacy",
+    "gdpr",
+    "europe",
+    "trustcaptcha",
+    "captcha-service",
+    "made-in-europe"
+  ],
+  "homepage": "https://www.trustcomponent.com/en/products/captcha/integrations/jtl-shop-captcha-plugin",
+  "license": "Apache-2.0",
+  "authors": [
+    {
+      "name": "TrustComponent",
+      "email": "mail@trustcomponent.com",
+      "homepage": "https://www.trustcomponent.com"
+    }
+  ],
+  "support": {
+    "email": "mail@trustcomponent.com"
+  },
   "require": {
     "php": ">=7.4",
     "trustcomponent/trustcaptcha-php": "^2.0"
