@@ -2,7 +2,7 @@
 <jtlshopplugin>
     <Name>TrustCaptcha</Name>
     <Description>TrustCaptcha – Privacy-first CAPTCHA solution for JTL. GDPR-compliant, bot protection made in Europe.</Description>
-    <Author>TrustCaptcha GmbH</Author>
+    <Author>Trustcaptcha GmbH</Author>
     <URL>https://www.trustcomponent.com/en/products/captcha/integrations/jtl-captcha-plugin</URL>
     <PluginID>trustcomponent_trustcaptcha_jtl</PluginID>
     <XMLVersion>100</XMLVersion>

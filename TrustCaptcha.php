@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Plugin\trustcaptcha;
+namespace Plugin\trustcomponent_trustcaptcha_jtl;
 
 use Exception;
 use JTL\Helpers\Request;

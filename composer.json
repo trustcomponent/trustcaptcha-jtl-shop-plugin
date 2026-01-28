@@ -1,5 +1,5 @@
 {
-  "name": "trustcaptcha/tc-captcha-library-jtl",
+  "name": "trustcomponent/trustcaptcha-jtl",
   "description": "TrustCaptcha Plugin for JTL Shop",
   "type": "jtl-shop-plugin",
   "require": {
@@ -8,7 +8,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Plugin\\trustcaptcha\\": ""
+      "Plugin\\trustcomponent_trustcaptcha_jtl\\": ""
     }
   }
 }

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Plugin\trustcaptcha;
+namespace Plugin\trustcomponent_trustcaptcha_jtl;
 
 use JTL\Alert\Alert;
 use JTL\Consent\Item;
