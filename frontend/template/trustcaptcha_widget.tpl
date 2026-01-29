@@ -13,6 +13,7 @@
         invisible="{$invisible|escape:'html'}"
         invisible-hint="{$invisibleHint|escape:'html'}"
         mode="{$mode|escape:'html'}"
+        framework="jtl5"
 ></trustcaptcha-component>
 
 <style>
