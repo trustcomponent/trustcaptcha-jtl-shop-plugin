@@ -3,19 +3,10 @@
 namespace Plugin\trustcomponent_trustcaptcha_jtl;
 
 use JTL\Alert\Alert;
-use JTL\Consent\Item;
 use JTL\Events\Dispatcher;
-use JTL\Events\Event;
-use JTL\Helpers\Form;
-use JTL\Helpers\Request;
 use JTL\Link\LinkInterface;
 use JTL\Plugin\Bootstrapper;
-use JTL\Router\Router;
 use JTL\Shop;
-use JTL\Helpers\Log;
-use JTL\Shopsetting;
-use JTL\Smarty\JTLSmarty;
-use Laminas\Diactoros\ServerRequestFactory;
 use JTL\Backend\Notification;
 use JTL\Backend\NotificationEntry;
 
@@ -30,69 +21,11 @@ class Bootstrap extends Bootstrapper
 
         parent::boot($dispatcher);
 
-        // Admin-Tab rendern
-        $dispatcher->listen('plugin.adminmenu.render', function ($menuItem, JTLSmarty $smarty): void {
-            $this->renderAdminTab($menuItem, $smarty);
-        });
-
         $dispatcher->listen('backend.notification', [$this, 'checkNotification']);
         $dispatcher->listen('shop.hook.' . \HOOK_CAPTCHA_CONFIGURED, [$this, 'tcConfigured']);
         $dispatcher->listen('shop.hook.' . \HOOK_CAPTCHA_MARKUP, [$this, 'tcMarkup']);
         $dispatcher->listen('shop.hook.' . \HOOK_CAPTCHA_VALIDATE, [$this, 'tcValidate']);
     }
-
-    /**
-     * Admin-Tab rendern
-     */
-    public function renderAdminMenuTab(string $tabName, int $menuID, JTLSmarty $smarty): string
-    {
-        $plugin     = $this->getPlugin();
-
-        // Admin-URL ermitteln
-        $backendURL = \method_exists($plugin->getPaths(), 'getBackendURL')
-            ? $plugin->getPaths()->getBackendURL()
-            : Shop::getAdminURL() . '/plugin.php?kPlugin=' . $plugin->getID();
-
-        $smarty->assign('menuID', $menuID)
-            ->assign('posted', null)
-            ->assign('backendURL', $backendURL)
-            ->assign('jtl_token', Form::getTokenInput());
-
-        $template = 'testtab.tpl';
-
-        if ($tabName === 'Ein Testtab') {
-            $template = 'testtab.tpl';
-
-            if (Request::postInt('clear-cache') === 1) {
-                $alert = Shop::Container()->getAlertService();
-                if (Form::validateToken()) {
-                    $this->getCache()->flushTags($plugin->getCache()->getGroup());
-                    $alert->addAlert(Alert::TYPE_SUCCESS, \__('Cache successfully flushed.'), 'succCacheFlush');
-                } else {
-                    $alert->addAlert(Alert::TYPE_ERROR, \__('CSRF error!'), 'failedCsrfCheck');
-                }
-            }
-        }
-
-        if ($tabName === 'Tab2') {
-            $template = 'tab2.tpl';
-            if (Form::validateToken()) {
-                $posted = Request::postVar('tab2_input');
-                if ($posted !== null) {
-                    $smarty->assign('posted', $posted);
-                }
-            }
-        }
-
-        if ($tabName === 'Einstellungen') {
-            $template = 'settings.tpl';
-        }
-
-        return $smarty->fetch(
-            $plugin->getPaths()->getAdminPath() . '/templates/' . $template
-        );
-    }
-
 
     public function checkNotification(Notification $notification): void
     {
@@ -124,9 +57,8 @@ class Bootstrap extends Bootstrapper
 
     public function tcConfigured(array &$args): void
     {
-        $args['isConfigured'] = true;
-//        $captcha = getCaptcha();
-//        $args['isConfigured'] = $captcha->isConfigured();
+        $captcha = $this->getCaptcha();
+        $args['isConfigured'] = $captcha->isConfigured();
     }
 
 
