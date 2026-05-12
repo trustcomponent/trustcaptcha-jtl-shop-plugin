@@ -6,7 +6,7 @@
     <URL>https://www.trustcomponent.com/en/products/captcha/integrations/jtl-shop-captcha-plugin</URL>
     <PluginID>trustcomponent_trustcaptcha_jtl</PluginID>
     <XMLVersion>100</XMLVersion>
-    <Version>2.1.1</Version>
+    <Version>3.0.1</Version>
     <ShopVersion>5.0.0</ShopVersion>
     <CreateDate>2026-01-01</CreateDate>
 
@@ -15,7 +15,7 @@
     <Install>
 
         <RequireComposer>
-            <Package name="trustcomponent/trustcaptcha-php" version="^2.0"/>
+            <Package name="trustcomponent/trustcaptcha-php" version="^3.0"/>
         </RequireComposer>
 
         <Locales>
@@ -38,8 +38,8 @@
                 </Setting>
 
                 <Setting type="password" initialValue="" sort="4" conf="Y">
-                    <Name>Secret-Key (required)</Name>
-                    <Description>Secret-Key of the CAPTCHA. You can find this on the administration page of your CAPTCHA.</Description>
+                    <Name>API-Key (required)</Name>
+                    <Description>Previously labeled "Secret Key".</Description>
                     <ValueName>trustcaptcha_secret_key</ValueName>
                 </Setting>
 
@@ -54,10 +54,6 @@
                     <Description>At which score a request counts as a bot. Recommended: 0.5 (0 = human, 1 = bot)</Description>
                     <ValueName>trustcaptcha_threshold</ValueName>
                     <SelectboxOptions>
-                        <Option value="0.00" sort="0">0.00</Option>
-                        <Option value="0.05" sort="1">0.05</Option>
-                        <Option value="0.10" sort="2">0.10</Option>
-                        <Option value="0.15" sort="3">0.15</Option>
                         <Option value="0.20" sort="4">0.20</Option>
                         <Option value="0.25" sort="5">0.25</Option>
                         <Option value="0.30" sort="6">0.30</Option>
@@ -164,7 +160,7 @@
                 </Setting>
 
                 <Setting type="checkbox" initialValue="0" sort="12" conf="Y">
-                    <Name>Hide branding</Name>
+                    <Name>White Label / Hide Branding</Name>
                     <Description>Setting to hide the TrustCaptcha logo. License key required</Description>
                     <ValueName>trustcaptcha_hide_branding</ValueName>
                 </Setting>
@@ -188,12 +184,12 @@
                 </Setting>
 
                 <Setting type="selectbox" initialValue="standard" sort="15" conf="Y">
-                    <Name>Mode</Name>
+                    <Name>Minimal Data Mode</Name>
                     <Description>Set the data mode of the captcha. Must match the settings of the captcha.</Description>
                     <ValueName>trustcaptcha_mode</ValueName>
                     <SelectboxOptions>
-                        <Option value="standard" sort="1">Standard</Option>
-                        <Option value="minimal" sort="2">Minimal</Option>
+                        <Option value="standard" sort="1">Disabled</Option>
+                        <Option value="minimal" sort="2">Enabled</Option>
                     </SelectboxOptions>
                 </Setting>
 
@@ -207,6 +203,12 @@
                     <Name>Custom design (JSON)</Name>
                     <Description>Custom design adjustments for the TrustCaptcha component. License key required</Description>
                     <ValueName>trustcaptcha_custom_design</ValueName>
+                </Setting>
+
+                <Setting type="checkbox" initialValue="0" sort="18" conf="Y">
+                    <Name>Failover Enabled</Name>
+                    <Description>In the rare event of a TrustCaptcha outage, CAPTCHAs are accepted so your forms keep working — bot protection is skipped only while we're unreachable. Make sure your server can normally reach our API.</Description>
+                    <ValueName>trustcaptcha_failover_enabled</ValueName>
                 </Setting>
 
             </Settingslink>

@@ -64,10 +64,12 @@ class Bootstrap extends Bootstrapper
 
     public function tcMarkup(array &$args): void
     {
-        $args['markup'] = (isset($args['getBody']) && $args['getBody'])
-            ? $this->getCaptcha()->getMarkup()
-            : '<script src="https://cdn.trustcomponent.com/trustcaptcha/2.1.x/trustcaptcha.umd.min.js"></script>';
-
+        if (isset($args['getBody']) && $args['getBody']) {
+            $args['markup'] = $this->getCaptcha()->getMarkup();
+            return;
+        }
+        $scriptUrl = $this->getPlugin()->getPaths()->getFrontendURL() . 'js/trustcaptcha-3.0.1.umd.min.js';
+        $args['markup'] = '<script src="' . htmlspecialchars($scriptUrl, ENT_QUOTES) . '" defer></script>';
     }
 
 

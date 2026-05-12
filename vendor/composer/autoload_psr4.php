@@ -7,6 +7,5 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'TrustComponent\\TrustCaptcha\\' => array($vendorDir . '/trustcomponent/trustcaptcha-php/src'),
-    'Plugin\\trustcaptcha\\' => array($baseDir . '/'),
-    'Composer\\CaBundle\\' => array($vendorDir . '/composer/ca-bundle/src'),
+    'Plugin\\trustcomponent_trustcaptcha_jtl\\' => array($baseDir . '/'),
 );

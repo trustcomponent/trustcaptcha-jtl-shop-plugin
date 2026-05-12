@@ -8,8 +8,10 @@ use Exception;
 use JTL\Helpers\Request;
 use JTL\Plugin\PluginInterface;
 use JTL\Shop;
-use TrustComponent\TrustCaptcha\CaptchaManager;
-use JTL\Helpers\Log;
+use TrustComponent\TrustCaptcha\TrustCaptcha as TrustCaptchaClient;
+use TrustComponent\TrustCaptcha\ApiKeyInvalidException;
+use TrustComponent\TrustCaptcha\ServerUnreachableException;
+use TrustComponent\TrustCaptcha\ClientReportedServerUnreachableException;
 
 class TrustCaptcha
 {
@@ -48,22 +50,44 @@ class TrustCaptcha
 
         $plugin = $this->getPlugin();
         $config = $plugin->getConfig();
-        $secretKey = $config->getValue('trustcaptcha_secret_key') ?? '';
-        return $this->verifyKey($secretKey, $requestData['tc-verification-token']);
+        $apiKey = $config->getValue('trustcaptcha_secret_key') ?? '';
+        return $this->verifyKey($apiKey, $requestData['tc-verification-token']);
     }
 
-    private function verifyKey(string $secretKey, string $trustcaptcha_token): bool {
+    private function verifyKey(string $apiKey, string $trustcaptcha_token): bool {
 
-        $threshold = (float) ($this->plugin->getConfig()->getValue('trustcaptcha_threshold') ?? 0.5);
+        $threshold = max(0.2, (float) ($this->plugin->getConfig()->getValue('trustcaptcha_threshold') ?? 0.5));
+        $failoverEnabled = (bool) ($this->plugin->getConfig()->getValue('trustcaptcha_failover_enabled') ?? false);
+
         try {
-            $verificationResult = CaptchaManager::getVerificationResult($secretKey, $trustcaptcha_token);
+            $trustCaptcha = new TrustCaptchaClient($apiKey);
+            $verificationResult = $trustCaptcha->getVerificationResult($trustcaptcha_token);
 
             if (!$verificationResult->verificationPassed || $verificationResult->score > $threshold) {
                 return false;
             }
             return true;
-        } catch (Exception $e) {
-
+        } catch (ServerUnreachableException $e) {
+            if ($failoverEnabled) {
+                Shop::Container()->getLogService()->warning(
+                    'TrustCaptcha: API unreachable from server — allowed via failover. ' . $e->getMessage()
+                );
+                return true;
+            }
+            Shop::Container()->getLogService()->error(
+                'TrustCaptcha: API unreachable from server, failover disabled. ' . $e->getMessage()
+            );
+            return false;
+        } catch (ClientReportedServerUnreachableException $e) {
+            // Always reject — low-trust signal.
+            Shop::Container()->getLogService()->warning(
+                'TrustCaptcha: Client reported failover blocked. ' . $e->getMessage()
+            );
+            return false;
+        } catch (ApiKeyInvalidException | Exception $e) {
+            Shop::Container()->getLogService()->error(
+                'TrustCaptcha verification error: ' . $e->getMessage()
+            );
             return false;
         }
     }
@@ -77,32 +101,35 @@ class TrustCaptcha
         $language           = $config->getValue('trustcaptcha_language') ?? 'auto';
         $theme              = $config->getValue('trustcaptcha_theme') ?? 'light';
         $width              = $config->getValue('trustcaptcha_width') ?? 'fixed';
-        $autostart          = $config->getValue('trustcaptcha_autostart') == "Y" ? 'true' : 'false';
+        // Plugin setting "autostart" is stored as "Y"/"N" in JTL. Invert to the v3 "autostart-disabled" attribute.
+        $autostartDisabled  = $config->getValue('trustcaptcha_autostart') === 'N';
         $license            = $config->getValue('trustcaptcha_license_key') ?? '';
-        $hideBranding       = $config->getValue('trustcaptcha_hide_branding') ? 'true' : 'false';
-        $invisible          = $config->getValue('trustcaptcha_invisible') ? 'true' : 'false';
+        $hideBranding       = (bool) $config->getValue('trustcaptcha_hide_branding');
+        $invisible          = (bool) $config->getValue('trustcaptcha_invisible');
         $invisibleHint      = $config->getValue('trustcaptcha_invisible_hint') ?? 'right-border';
         $mode               = $config->getValue('trustcaptcha_mode') ?? 'standard';
         $privacyUrl         = $config->getValue('trustcaptcha_privacy_url') ?? '';
         $customTranslations = $config->getValue('trustcaptcha_custom_translations') ?? '';
         $customDesign       = $config->getValue('trustcaptcha_custom_design') ?? '';
+        $failoverEnabled    = (bool) $config->getValue('trustcaptcha_failover_enabled');
 
         try {
             return Shop::Smarty()
                 ->assign([
-                    'siteKey'            => $siteKey,
-                    'language'           => $language,
-                    'theme'              => $theme,
-                    'width'              => $width,
-                    'autostart'          => $autostart,
-                    'license'            => $license,
-                    'hideBranding'       => $hideBranding,
-                    'invisible'          => $invisible,
-                    'invisibleHint'      => $invisibleHint,
-                    'mode'               => $mode,
-                    'privacyUrl'         => $privacyUrl,
-                    'customTranslations' => $customTranslations,
-                    'customDesign'       => $customDesign,
+                    'siteKey'             => $siteKey,
+                    'language'            => $language,
+                    'theme'               => $theme,
+                    'fullWidth'           => ($width === 'full'),
+                    'autostartDisabled'   => $autostartDisabled,
+                    'license'             => $license,
+                    'whiteLabel'          => $hideBranding,
+                    'invisible'           => $invisible,
+                    'invisibleHint'       => $invisibleHint,
+                    'minimalDataMode'     => ($mode === 'minimal'),
+                    'privacyUrl'          => $privacyUrl,
+                    'customTranslations'  => $customTranslations,
+                    'customDesign'        => $customDesign,
+                    'failoverEnabled'     => $failoverEnabled,
                 ])
                 ->fetch($plugin->getPaths()->getFrontendPath() . '/template/trustcaptcha_widget.tpl');
         } catch (Exception $e) {

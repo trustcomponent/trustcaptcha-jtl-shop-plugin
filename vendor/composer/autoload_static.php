@@ -4,35 +4,27 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit3fa04664465d979cfdbf318bb2661779
+class ComposerStaticInit3ad0fc64b3801a28dbd7130014cc6bc2
 {
     public static $prefixLengthsPsr4 = array (
-        'T' =>
+        'T' => 
         array (
             'TrustComponent\\TrustCaptcha\\' => 28,
         ),
-        'P' =>
+        'P' => 
         array (
-            'Plugin\\trustcaptcha\\' => 20,
-        ),
-        'C' =>
-        array (
-            'Composer\\CaBundle\\' => 18,
+            'Plugin\\trustcomponent_trustcaptcha_jtl\\' => 39,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'TrustComponent\\TrustCaptcha\\' =>
+        'TrustComponent\\TrustCaptcha\\' => 
         array (
             0 => __DIR__ . '/..' . '/trustcomponent/trustcaptcha-php/src',
         ),
-        'Plugin\\trustcaptcha\\' =>
+        'Plugin\\trustcomponent_trustcaptcha_jtl\\' => 
         array (
             0 => __DIR__ . '/../..' . '/',
-        ),
-        'Composer\\CaBundle\\' =>
-        array (
-            0 => __DIR__ . '/..' . '/composer/ca-bundle/src',
         ),
     );
 
@@ -43,9 +35,9 @@ class ComposerStaticInit3fa04664465d979cfdbf318bb2661779
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit3fa04664465d979cfdbf318bb2661779::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit3fa04664465d979cfdbf318bb2661779::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit3fa04664465d979cfdbf318bb2661779::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit3ad0fc64b3801a28dbd7130014cc6bc2::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit3ad0fc64b3801a28dbd7130014cc6bc2::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit3ad0fc64b3801a28dbd7130014cc6bc2::$classMap;
 
         }, null, ClassLoader::class);
     }
